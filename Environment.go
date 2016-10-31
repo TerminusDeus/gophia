@@ -46,7 +46,7 @@ const (
 
 // Environment is used to configure the database before opening.
 type Environment struct {
-	unsafe.Pointer
+	Pointer unsafe.Pointer
 }
 
 // NewEnvironment creates a new environment for opening a database.

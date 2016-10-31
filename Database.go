@@ -29,14 +29,15 @@ const (
 
 // ErrNotFound indicates that the key does not exist in the database.
 var ErrNotFound = errors.New("Key not found")
+
 // ErrTransactionInProgress returned when attempt to begin a transaction while there is already
 // a transaction in progress.
 var ErrTransactionInProgress = errors.New("Transaction already in progress")
 
 // Database is used for accessing a database.
 type Database struct {
-	unsafe.Pointer
-	env *Environment
+	Pointer unsafe.Pointer
+	env     *Environment
 }
 
 // Begin starts a multi-statement transaction.
@@ -73,13 +74,13 @@ func (db *Database) Close() error {
 }
 
 // Commit applies changes to a multi-statement
-// transaction. All modifications made during the transaction are written to 
+// transaction. All modifications made during the transaction are written to
 // the log file in a single batch.
 //
 // If commit failed, transaction modifications are discarded.
 func (db *Database) Commit() error {
 	e := C.sp_commit(db.Pointer)
-	if 0!=e {
+	if 0 != e {
 		return db.Error()
 	}
 	return nil
@@ -142,7 +143,6 @@ func (db *Database) Get(key []byte) ([]byte, error) {
 	return value, nil
 }
 
-
 // Has returns true if the database has a value for the key.
 func (db *Database) Has(key []byte) (bool, error) {
 	e := C.sp_get(db.Pointer, unsafe.Pointer(&key[0]), C.size_t(len(key)), nil, nil)
@@ -158,11 +158,11 @@ func (db *Database) Has(key []byte) (bool, error) {
 }
 
 // Rollback discards the changes of a multi-statement
-// transaction. All modifications made during the transaction are not written to 
+// transaction. All modifications made during the transaction are not written to
 // the log file.
 func (db *Database) Rollback() error {
 	e := C.sp_rollback(db.Pointer)
-	if 0!=e {
+	if 0 != e {
 		return db.Error()
 	}
 	return nil

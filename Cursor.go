@@ -14,7 +14,7 @@ import "C"
 
 // Cursor iterates over key-values in a database.
 type Cursor struct {
-	unsafe.Pointer
+	Pointer unsafe.Pointer
 }
 
 // Close closes the cursor. If a cursor is not closed, future operations
